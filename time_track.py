@@ -2,6 +2,7 @@ import tkinter as tk
 from datetime import datetime
 from os.path import exists
 from tkcalendar import Calendar
+from tktimepicker import AnalogPicker, AnalogThemes
 
 # Counter to identify start and end
 counter = 0
@@ -10,7 +11,7 @@ start_time = datetime.now()
 # Top level window
 frame = tk.Tk()
 frame.title("TextBox Input")
-frame.geometry('600x400')
+frame.geometry('600x800')
 
 # write the timestamp in a file
 def track():
@@ -78,10 +79,15 @@ def track():
 
     f.close()
 
-# gettin date from the calendar
-def fetch_date():
-    date.config(text = "Selected Date is: " + tkc.get_date())
 
+
+# save date time in file 
+def save_datetime(date, time):
+    print(date + " ## " + time)
+
+
+
+######## Start / End Button ########
 
 # show label while the time is recording
 lab = tk.Label(frame, text="time is running ...")
@@ -91,14 +97,35 @@ btn = tk.Button(frame, text = "Start", command = track)
 btn.pack()
 
 
-# Calendar picker
+######## Calendar picker ########
+
+# gettin date from the calendar
+def fetch_date():
+    date_lbl.config(text = "Selected Date is: " + str(tkc.get_date()))
+
 tkc = Calendar(frame,selectmode = "day",year=2022,month=10,date=1)
 tkc.pack()
 but = tk.Button(frame,text="Select Date",command=fetch_date, bg="black", fg='white')
 but.pack()
 
-date = tk.Label(frame, text="")
-date.pack()
+# conver time to a string
+date = str(tkc.get_date())
+
+# create date label 
+date_lbl = tk.Label(frame, text="")
+date_lbl.pack()
+
+######## Time picker ########
+time_picker = AnalogPicker(frame)
+time_picker.pack(expand=True, fill="both")
+
+theme = AnalogThemes(time_picker)
+theme.setDracula()
+time = str(time_picker.hours) + ':' + str(time_picker.minutes)
+
+######## Save Button ########
+save = tk.Button(frame, text="Save", command=save_datetime(date ,time))
+save.pack()
 
 # quit button 
 quit = tk.Button(frame, text="Quit", command=frame.destroy)
