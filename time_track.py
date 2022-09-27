@@ -3,6 +3,7 @@ from datetime import datetime
 
 # Counter to identify start and end
 counter = 0
+start_time = datetime.now()
 
 # Top level window
 frame = tk.Tk()
@@ -28,10 +29,16 @@ def track():
     global counter 
     counter = counter + 1
     if counter % 2 == 1:
+        global start_time 
+        start_time = time_stamp
         btn['text'] = 'End'
     else:
+        # calculate the duration
+        end_time = time_stamp
+        duration = end_time - start_time
+
         # insert a new line in the file
-        f.write('\n')
+        f.write(str(duration) + '\n')
         btn['text'] = 'Start'
 
     f.close()
