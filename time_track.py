@@ -1,5 +1,6 @@
 import tkinter as tk
 from datetime import datetime
+from os.path import exists
 
 # Counter to identify start and end
 counter = 0
@@ -16,8 +17,19 @@ def track():
     # create timestamp
     time_stamp = datetime.now()
 
+    filename = "working_time.csv"
+    if not exists(filename):
+        # open file
+        f = open(filename, "a")
+        
+        # write the header in the file
+        f.write("start;end;duration\n")
+
+        # close 
+        f.close()
+
     # open file
-    f = open("work_time.csv", "a")
+    f = open(filename, "a")
 
     # create file content
     text = str(time_stamp) + ';'
