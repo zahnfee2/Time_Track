@@ -23,7 +23,7 @@ def save_in_file(content, filename, operation):
     f = open(filename, operation)
 
     # write content in fiel
-    f.write(content)
+    f.write(str(content))
     
     # close file
     f.close()
@@ -41,13 +41,6 @@ def track():
     if not exists(filename):
         header = "start;end;duration\n"
         save_in_file(header, filename, 'a')
-
-
-    # create file content
-    text = str(time_stamp) + ';'
-
-    # save content in file
-    save_in_file(text, filename, 'a')
 
     # check if start or end
     global counter 
@@ -67,19 +60,26 @@ def track():
         # hide quit button
         quit.pack_forget()
 
-        # show correct button 
+        # show correct text fild
+        forgot_lbl.pack()
         change_start_time.pack()
+        change_start_time.insert('1.0', str(start_time))
 
         # show save button
         save_button.pack()
 
     else: # is not running
         # calculate the duration
+        global end_time
         end_time = time_stamp
+
         duration = convert_to_datetime(end_time) - convert_to_datetime(start_time)
 
+        # create line 
+        str_data = str(start_time) + ";" + str(end_time) + ";" + str(duration) + '\n'
+
         # insert a new line in the file
-        save_in_file(str(duration) + '\n', filename, 'a')
+        save_in_file(str_data, filename, 'a')
 
         # change button text
         btn['text'] = 'Start'
@@ -91,6 +91,7 @@ def track():
         quit.pack()
 
         # hide correct button 
+        forgot_lbl.pack_forget()
         change_start_time.pack_forget()
 
         # hide save button
@@ -112,13 +113,23 @@ def get_file_content(filename):
 
 # save date time in file 
 def save_correct_start():
-    datetime = change_start_time.get(1.0, 'end-1c')
-    save_new_data_and_sort_list(datetime)
+    global start_time
+    start_time_old = start_time
+    start_time = str(change_start_time.get(1.0, 'end-1c'))
+    print("Start_time is changend from: " + start_time_old + " to: " + start_time)
+    # save_new_data_and_sort_list(datetime)
 
 
 
 def insert_datetime(content, datetime_str):
-    conv_datetime = convert_to_datetime(datetime_str)
+    print(content)
+    content.append(datetime_str)
+    # data = sorted(content, key=lambda row: datetime.strptime(row[0], time_format))
+    print("sort done")
+    # return data
+
+"""
+conv_datetime = convert_to_datetime(datetime_str)
     conv_content = []
 
     for i in content:
@@ -126,14 +137,14 @@ def insert_datetime(content, datetime_str):
         if(len(split_i) == 3):
             counter = 0
             for letter in split_i:
-                if(counter == 2):
+                if(counter == 0):
+                    conv_i = convert_to_datetime(letter)
+                    conv_content.append(conv_i)
                     break
-                letter = letter.replace("\n", "")
-                conv_i = convert_to_datetime(letter)
-                conv_content.append(conv_i)
-                counter = counter + 1
+"""
     
-    print("sort done")
+
+    
 
 
 # save datetime in file and sort the list 
@@ -141,8 +152,9 @@ def save_new_data_and_sort_list(datetime):
     content = get_file_content(filename)
     for i in content:
         print(i)
-    sort_content = insert_datetime(content, datetime)
-    #save_in_file(sort_content, filename, 'w')
+    # sort_content = insert_datetime(content, datetime)
+    # print(sort_content)
+    # save_in_file(sort_content, filename, 'w')
 
 
 
@@ -156,6 +168,9 @@ btn.pack()
 
 # change the start time
 change_start_time = tk.Text(frame, height=2, width=30)
+
+# forgot label
+forgot_lbl = tk.Label(frame, text="Did you forget to press start?\n  Here you have the possibility to correct the start time.")
 
 # save button
 save_button = tk.Button(frame, text="Save", command=save_correct_start)
