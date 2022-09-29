@@ -114,9 +114,9 @@ def track():
         add_start_time_lbl.pack()
         add_end_time_lbl.pack()
         add_start_time.pack()
-        add_start_time.insert('1.0', str(start_time))
+        #add_start_time.insert('1.0', str(start_time))
         add_end_time.pack()
-        add_end_time.insert('1.0', str(start_time))
+        #add_end_time.insert('1.0', str(start_time))
         add_time_save.pack()
 
         # hide saved label
