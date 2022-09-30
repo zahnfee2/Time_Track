@@ -1,3 +1,5 @@
+from html import entities
+from struct import pack
 import tkinter as tk
 from datetime import datetime
 from os.path import exists
@@ -22,6 +24,12 @@ frame.geometry('600x300') # change window size
 # filename
 filename = "working_time.csv"
 
+# coumpute the duration 
+def get_entire_duration(): 
+    content = pd.read_csv(filename)
+    content = pd.DataFrame(content)
+    content['duration'] = pd.to_timedelta(content.duration)
+    return content.duration.sum()
 
 # save string in file
 def save_in_file(content, filename, operation):
@@ -216,6 +224,9 @@ add_end_time.pack()
 # save button to add new time 
 add_time_save = tk.Button(frame, text="Save", command=save_time)
 add_time_save.pack()
+
+entire_duration_label = tk.Label(frame, text="Entire working duration: " + str(get_entire_duration()))
+entire_duration_label.pack()
 
 # quit button 
 quit = tk.Button(frame, text="Quit", command=frame.destroy)
