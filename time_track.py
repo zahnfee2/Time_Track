@@ -161,18 +161,15 @@ def save_time():
     , 'end': str(new_end_time) 
     , 'duration': str(new_duration)}
     
-
-
     content = pd.read_csv(filename)
     content = pd.DataFrame(content)
     content = content.append(line, ignore_index=True)
-    print(content.head())
     content['start'] = pd.to_datetime(content.start, infer_datetime_format = True)
     content.sort_values(by='start', ascending=True, inplace=True)
 
     content.to_csv(filename, index=False)
-    print(content.head())
 
+    saved_lbl.pack()
     print("List was sorted!")
 
 
