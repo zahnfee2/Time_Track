@@ -81,9 +81,6 @@ def track():
         # unhide label
         lab.pack()
 
-        # hide quit button
-        quit.pack_forget()
-
         # show correct text fild
         forgot_lbl.pack()
         change_start_time.pack()
@@ -101,6 +98,9 @@ def track():
         add_start_time.pack_forget()
         add_end_time.pack_forget()
         add_time_save.pack_forget()
+
+        # hide quit button
+        quit.pack_forget()
 
     else: # is not running
         # calculate the duration
@@ -121,9 +121,6 @@ def track():
         # hide label
         lab.pack_forget()
 
-        # unhide quit button
-        quit.pack()
-
         # hide correct button
         forgot_lbl.pack_forget()
         change_start_time.pack_forget()
@@ -137,10 +134,13 @@ def track():
 
         # show add time
         add_start_time_lbl.pack()
-        add_end_time_lbl.pack()
         add_start_time.pack()
+        add_end_time_lbl.pack()
         add_end_time.pack()
         add_time_save.pack()
+
+        # unhide quit button
+        quit.pack()
 
 def convert_to_datetime(str_datetime):
     return datetime.strptime(str_datetime, time_format)
@@ -217,6 +217,10 @@ frame = tk.Tk()
 frame.title("TextBox Input")
 frame.geometry('600x300') # change window size
 
+# Print the entire working time
+entire_duration_label = tk.Label(frame, text="Entire working duration: " + str(get_entire_duration()))
+entire_duration_label.pack()
+
 # show label while the time is recording
 lab = tk.Label(frame, text="time is running ...")
 
@@ -227,6 +231,7 @@ btn.pack()
 # forgot label
 forgot_lbl = tk.Label(frame,text="Did you forget to press start?\n  Here you have the possibility to correct the start time.")
 
+# save label
 saved_lbl = tk.Label(frame,bg="green", text="Saved!")
 
 # change the start time
@@ -257,10 +262,6 @@ add_time_save.pack()
 # Label that will show when the user enter a wrong timeformat
 wrong_format = tk.Label(frame, text="Wrong Format!")
 
-entire_duration_label = tk.Label(frame, text="Entire working duration: " + str(get_entire_duration()))
-entire_duration_label.pack()
-
-print(str(check_datetime_format(start_time)))
 
 # quit button
 quit = tk.Button(frame, text="Quit", command=frame.destroy)
