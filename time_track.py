@@ -217,7 +217,7 @@ add_end_time.insert('1.0', str(start_time))
 add_end_time.pack()
 
 # save button to add new time 
-add_time_save = tk.Button(frame, text="save", command=save_time)
+add_time_save = tk.Button(frame, text="Save", command=save_time)
 add_time_save.pack()
 
 # quit button 
