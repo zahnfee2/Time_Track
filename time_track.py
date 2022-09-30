@@ -194,7 +194,7 @@ btn.pack()
 # forgot label
 forgot_lbl = tk.Label(frame,text="Did you forget to press start?\n  Here you have the possibility to correct the start time.")
 
-saved_lbl = tk.Label(frame,text="Saved!")
+saved_lbl = tk.Label(frame,bg="green", text="Saved!")
 
 # change the start time
 change_start_time = tk.Text(frame, height=2, width=30)
