@@ -5,6 +5,11 @@ from datetime import datetime
 from os.path import exists
 from turtle import st
 import pandas as pd
+import re
+
+############################### Global Variabels ###############################
+# filename
+filename = "working_time.csv"
 
 # Counter to identify start and end
 counter = 0
@@ -16,13 +21,17 @@ time_format = '%Y/%m/%d %H:%M'
 start_time = datetime.now()
 start_time = start_time.strftime(time_format)
 
-# Top level window
-frame = tk.Tk()
-frame.title("TextBox Input")
-frame.geometry('600x300') # change window size
 
-# filename
-filename = "working_time.csv"
+
+############################### Functions ###############################
+
+def check_datetime_format(datetime_str):
+    regexp = re.compile('[0-9]{2}/[0-9]{2}/[0-9]{4}')
+    if regexp.search(datetime_str):
+        return True
+
+    return False
+
 
 # coumpute the duration
 def get_entire_duration():
@@ -77,7 +86,6 @@ def track():
         # show correct text fild
         forgot_lbl.pack()
         change_start_time.pack()
-        change_start_time.insert('1.0', str(start_time))
 
         # show save button
         save_button.pack()
@@ -122,9 +130,7 @@ def track():
         add_start_time_lbl.pack()
         add_end_time_lbl.pack()
         add_start_time.pack()
-        #add_start_time.insert('1.0', str(start_time))
         add_end_time.pack()
-        #add_end_time.insert('1.0', str(start_time))
         add_time_save.pack()
 
         # hide saved label
@@ -164,21 +170,27 @@ def save_time():
     new_start_time = add_start_time.get(1.0, 'end-1c')
     new_end_time = add_end_time.get(1.0, 'end-1c')
     new_duration = convert_to_datetime(new_end_time) - convert_to_datetime(new_start_time)
+    print(str(check_datetime_format(new_start_time)))
+    if check_datetime_format(new_start_time) and check_datetime_format(new_end_time):
 
-    line = {'start': str(new_start_time)
-    , 'end': str(new_end_time)
-    , 'duration': str(new_duration)}
+        line = {'start': str(new_start_time)
+        , 'end': str(new_end_time)
+        , 'duration': str(new_duration)}
+        if wrong_format.winfo_ismapped():
+            wrong_format.pack_forget()
 
-    content = pd.read_csv(filename)
-    content = pd.DataFrame(content)
-    content = content.append(line, ignore_index=True)
-    content['start'] = pd.to_datetime(content.start, infer_datetime_format = True)
-    content.sort_values(by='start', ascending=True, inplace=True)
+        content = pd.read_csv(filename)
+        content = pd.DataFrame(content)
+        content = content.append(line, ignore_index=True)
+        content['start'] = pd.to_datetime(content.start, infer_datetime_format = True)
+        content.sort_values(by='start', ascending=True, inplace=True)
 
-    content.to_csv(filename, index=False)
+        content.to_csv(filename, index=False)
 
-    saved_lbl.pack()
-    print("List was sorted!")
+        saved_lbl.pack()
+        print("List was sorted!")
+    else: 
+        wrong_format.pack()
 
 
 # print a list on the consol
@@ -188,7 +200,13 @@ def print_list(list):
 
 
 
-######## Start / End Button ########
+############################### GUI ###############################
+
+# Top level window
+frame = tk.Tk()
+frame.title("TextBox Input")
+frame.geometry('600x300') # change window size
+
 # show label while the time is recording
 lab = tk.Label(frame, text="time is running ...")
 
@@ -203,6 +221,7 @@ saved_lbl = tk.Label(frame,bg="green", text="Saved!")
 
 # change the start time
 change_start_time = tk.Text(frame, height=2, width=30)
+change_start_time.insert('0.0', str(start_time))
 
 # save button
 save_button = tk.Button(frame, text="Save", command=save_correct_start)
@@ -225,8 +244,13 @@ add_end_time.pack()
 add_time_save = tk.Button(frame, text="Save", command=save_time)
 add_time_save.pack()
 
+# Label that will show when the user enter a wrong timeformat
+wrong_format = tk.Label(frame, text="Wrong Format!")
+
 entire_duration_label = tk.Label(frame, text="Entire working duration: " + str(get_entire_duration()))
 entire_duration_label.pack()
+
+
 
 # quit button
 quit = tk.Button(frame, text="Quit", command=frame.destroy)
