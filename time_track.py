@@ -132,7 +132,8 @@ def track():
         save_button.pack_forget()
 
         # hide the save button 
-        saved_lbl.pack_forget()
+        if saved_lbl.winfo_ismapped():
+            saved_lbl.pack_forget()
 
         # show add time
         add_start_time_lbl.pack()
