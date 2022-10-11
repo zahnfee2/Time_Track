@@ -155,7 +155,6 @@ def get_file_content(filename):
 
     return content
 
-
 # save date time in file
 def save_correct_start():
     global start_time
@@ -167,8 +166,6 @@ def save_correct_start():
             wrong_format.pack_forget() 
     else: 
         wrong_format.pack()
-
-
 
 
 def sort_list_by_datetime(content):#
@@ -202,19 +199,17 @@ def save_time():
     else: 
         wrong_format.pack()
 
-
 # print a list on the consol
 def print_list(list):
     for i in list:
         print(i)
 
 
-
 ############################### GUI ###############################
 
 # Top level window
 frame = tk.Tk()
-frame.title("TextBox Input")
+frame.title("Time Track")
 frame.geometry('600x300') # change window size
 
 # Print the entire working time
@@ -261,7 +256,6 @@ add_time_save.pack()
 
 # Label that will show when the user enter a wrong timeformat
 wrong_format = tk.Label(frame, text="Wrong Format!")
-
 
 # quit button
 quit = tk.Button(frame, text="Quit", command=frame.destroy)
