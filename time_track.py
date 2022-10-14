@@ -17,6 +17,8 @@ counter = 0
 # time format
 time_format = '%Y/%m/%d %H:%M'
 
+pattern = '[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}:[0-9]{2}'
+
 # chreate start time
 start_time = datetime.now()
 start_time = start_time.strftime(time_format)
@@ -26,12 +28,11 @@ start_time = start_time.strftime(time_format)
 ############################### Functions ###############################
 
 def check_datetime_format(datetime_str):
-    regexp = re.compile('[0-9]{2}/[0-9]{2}/[0-9]{4}')
-    if regexp.search(datetime_str):
+    try:
+        datetime.strptime(datetime_str, time_format)
         return True
-
-    return False
-
+    except ValueError:
+        return False
 
 # coumpute the duration
 def get_entire_duration():
@@ -90,6 +91,10 @@ def track():
         # show save button
         save_button.pack()
 
+        # If the saved label is on the window, he will hide
+        if saved_lbl.winfo_ismapped():
+            saved_lbl.pack_forget()
+
         # hide add time
         add_start_time_lbl.pack_forget()
         add_end_time_lbl.pack_forget()
@@ -126,15 +131,15 @@ def track():
         # hide save button
         save_button.pack_forget()
 
+        # hide the save button 
+        saved_lbl.pack_forget()
+
         # show add time
         add_start_time_lbl.pack()
         add_end_time_lbl.pack()
         add_start_time.pack()
         add_end_time.pack()
         add_time_save.pack()
-
-        # hide saved label
-        saved_lbl.pack_forget()
 
 def convert_to_datetime(str_datetime):
     return datetime.strptime(str_datetime, time_format)
@@ -155,7 +160,12 @@ def save_correct_start():
     global start_time
     start_time_old = start_time
     start_time = str(change_start_time.get(1.0, 'end-1c'))
-    saved_lbl.pack()
+    if check_datetime_format(start_time):
+        saved_lbl.pack()
+        if wrong_format.winfo_ismapped():
+            wrong_format.pack_forget() 
+    else: 
+        wrong_format.pack()
 
 
 
@@ -169,10 +179,9 @@ def sort_list_by_datetime(content):#
 def save_time():
     new_start_time = add_start_time.get(1.0, 'end-1c')
     new_end_time = add_end_time.get(1.0, 'end-1c')
-    new_duration = convert_to_datetime(new_end_time) - convert_to_datetime(new_start_time)
-    print(str(check_datetime_format(new_start_time)))
+    print(str(check_datetime_format(new_end_time)))
     if check_datetime_format(new_start_time) and check_datetime_format(new_end_time):
-
+        new_duration = convert_to_datetime(new_end_time) - convert_to_datetime(new_start_time)
         line = {'start': str(new_start_time)
         , 'end': str(new_end_time)
         , 'duration': str(new_duration)}
@@ -250,7 +259,7 @@ wrong_format = tk.Label(frame, text="Wrong Format!")
 entire_duration_label = tk.Label(frame, text="Entire working duration: " + str(get_entire_duration()))
 entire_duration_label.pack()
 
-
+print(str(check_datetime_format(start_time)))
 
 # quit button
 quit = tk.Button(frame, text="Quit", command=frame.destroy)
