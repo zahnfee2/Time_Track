@@ -189,7 +189,7 @@ def save_time():
 
         saved_lbl.pack()
         print("List was sorted!")
-    else: 
+    else:
         wrong_format.pack()
 
 
