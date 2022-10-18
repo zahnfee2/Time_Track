@@ -64,7 +64,7 @@ def track():
     # check if file exists
     if not exists(filename):
         header = "start,end,duration\n"
-        save_in_file(header, filename, 'a')
+        save_in_file(header, filename, 'a+')
 
     # check if start or end
     global counter
@@ -80,9 +80,6 @@ def track():
 
         # unhide label
         lab.pack()
-
-        # hide quit button
-        quit.pack_forget()
 
         # show correct text fild
         forgot_lbl.pack()
@@ -102,6 +99,9 @@ def track():
         add_end_time.pack_forget()
         add_time_save.pack_forget()
 
+        # hide quit button
+        quit.pack_forget()
+
     else: # is not running
         # calculate the duration
         global end_time
@@ -113,16 +113,13 @@ def track():
         str_data = str(start_time) + "," + str(end_time) + "," + str(duration) + '\n'
 
         # insert a new line in the file
-        save_in_file(str_data, filename, 'a')
+        save_in_file(str_data, filename, 'a+')
 
         # change button text
         btn['text'] = 'Start'
 
         # hide label
         lab.pack_forget()
-
-        # unhide quit button
-        quit.pack()
 
         # hide correct button
         forgot_lbl.pack_forget()
@@ -132,14 +129,18 @@ def track():
         save_button.pack_forget()
 
         # hide the save button 
-        saved_lbl.pack_forget()
+        if saved_lbl.winfo_ismapped():
+            saved_lbl.pack_forget()
 
         # show add time
         add_start_time_lbl.pack()
-        add_end_time_lbl.pack()
         add_start_time.pack()
+        add_end_time_lbl.pack()
         add_end_time.pack()
         add_time_save.pack()
+
+        # unhide quit button
+        quit.pack()
 
 def convert_to_datetime(str_datetime):
     return datetime.strptime(str_datetime, time_format)
@@ -154,7 +155,6 @@ def get_file_content(filename):
 
     return content
 
-
 # save date time in file
 def save_correct_start():
     global start_time
@@ -166,8 +166,6 @@ def save_correct_start():
             wrong_format.pack_forget() 
     else: 
         wrong_format.pack()
-
-
 
 
 def sort_list_by_datetime(content):#
@@ -201,20 +199,22 @@ def save_time():
     else:
         wrong_format.pack()
 
-
 # print a list on the consol
 def print_list(list):
     for i in list:
         print(i)
 
 
-
 ############################### GUI ###############################
 
 # Top level window
 frame = tk.Tk()
-frame.title("TextBox Input")
+frame.title("Time Track")
 frame.geometry('600x300') # change window size
+
+# Print the entire working time
+entire_duration_label = tk.Label(frame, text="Entire working duration: " + str(get_entire_duration()))
+entire_duration_label.pack()
 
 # show label while the time is recording
 lab = tk.Label(frame, text="time is running ...")
@@ -226,6 +226,7 @@ btn.pack()
 # forgot label
 forgot_lbl = tk.Label(frame,text="Did you forget to press start?\n  Here you have the possibility to correct the start time.")
 
+# save label
 saved_lbl = tk.Label(frame,bg="green", text="Saved!")
 
 # change the start time
@@ -255,11 +256,6 @@ add_time_save.pack()
 
 # Label that will show when the user enter a wrong timeformat
 wrong_format = tk.Label(frame, text="Wrong Format!")
-
-entire_duration_label = tk.Label(frame, text="Entire working duration: " + str(get_entire_duration()))
-entire_duration_label.pack()
-
-print(str(check_datetime_format(start_time)))
 
 # quit button
 quit = tk.Button(frame, text="Quit", command=frame.destroy)
