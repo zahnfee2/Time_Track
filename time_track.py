@@ -64,7 +64,7 @@ def track():
     # check if file exists
     if not exists(filename):
         header = "start,end,duration\n"
-        save_in_file(header, filename, 'a')
+        save_in_file(header, filename, 'a+')
 
     # check if start or end
     global counter
@@ -113,7 +113,7 @@ def track():
         str_data = str(start_time) + "," + str(end_time) + "," + str(duration) + '\n'
 
         # insert a new line in the file
-        save_in_file(str_data, filename, 'a')
+        save_in_file(str_data, filename, 'a+')
 
         # change button text
         btn['text'] = 'Start'
