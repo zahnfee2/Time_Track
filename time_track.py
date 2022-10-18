@@ -9,7 +9,7 @@ import re
 
 ############################### Global Variabels ###############################
 # filename
-filename = "working_time.csv"
+filename = "./working_time.csv"
 
 # Counter to identify start and end
 counter = 0
@@ -64,7 +64,7 @@ def track():
     # check if file exists
     if not exists(filename):
         header = "start,end,duration\n"
-        save_in_file(header, filename, 'a+')
+        save_in_file(header, filename, 'a')
 
     # check if start or end
     global counter
