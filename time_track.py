@@ -9,7 +9,7 @@ import re
 
 ############################### Global Variabels ###############################
 # filename
-filename = "working_time.csv"
+filename = "./working_time.csv"
 
 # Counter to identify start and end
 counter = 0
@@ -113,7 +113,7 @@ def track():
         str_data = str(start_time) + "," + str(end_time) + "," + str(duration) + '\n'
 
         # insert a new line in the file
-        save_in_file(str_data, filename, 'a')
+        save_in_file(str_data, filename, 'a+')
 
         # change button text
         btn['text'] = 'Start'
@@ -196,7 +196,7 @@ def save_time():
 
         saved_lbl.pack()
         print("List was sorted!")
-    else: 
+    else:
         wrong_format.pack()
 
 # print a list on the consol
