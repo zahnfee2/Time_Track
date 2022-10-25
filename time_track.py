@@ -98,8 +98,10 @@ def track():
         # hide add time
         add_start_time_lbl.pack_forget()
         add_end_time_lbl.pack_forget()
+        add_topic_lbl.pack_forget()
         add_start_time.pack_forget()
         add_end_time.pack_forget()
+        add_topic.pack_forget()
         add_time_save.pack_forget()
 
         # hide quit button
@@ -146,6 +148,8 @@ def track():
         add_start_time.pack()
         add_end_time_lbl.pack()
         add_end_time.pack()
+        add_topic_lbl.pack()
+        add_topic.pack()
         add_time_save.pack()
 
         # unhide quit button
@@ -186,12 +190,18 @@ def sort_list_by_datetime(content):#
 def save_time():
     new_start_time = add_start_time.get(1.0, 'end-1c')
     new_end_time = add_end_time.get(1.0, 'end-1c')
-    print(str(check_datetime_format(new_end_time)))
+    new_topic = add_topic.get(1.0, 'end-1c')
+
+    #print(str(check_datetime_format(new_end_time)))
+
     if check_datetime_format(new_start_time) and check_datetime_format(new_end_time):
         new_duration = convert_to_datetime(new_end_time) - convert_to_datetime(new_start_time)
+
         line = {'start': str(new_start_time)
         , 'end': str(new_end_time)
-        , 'duration': str(new_duration)}
+        , 'duration': str(new_duration)
+        , 'topic': str(new_topic)}
+
         if wrong_format.winfo_ismapped():
             wrong_format.pack_forget()
 
@@ -200,10 +210,9 @@ def save_time():
         content = content.append(line, ignore_index=True)
         content['start'] = pd.to_datetime(content.start, infer_datetime_format = True)
         content.sort_values(by='start', ascending=True, inplace=True)
-
         content.to_csv(filename, index=False)
-
         saved_lbl.pack()
+
         print("List was sorted!")
     else:
         wrong_format.pack()
@@ -212,7 +221,6 @@ def save_time():
 def print_list(list):
     for i in list:
         print(i)
-
 
 ############################### GUI ###############################
 
@@ -274,6 +282,13 @@ add_end_time_lbl.pack()
 add_end_time = tk.Text(frame, height=2, width=30)
 add_end_time.insert('1.0', str(start_time))
 add_end_time.pack()
+
+# add topic 
+add_topic_lbl = tk.Label(frame, text="Topic:")
+add_topic_lbl.pack()
+add_topic = tk.Text(frame, height=3, width=30)
+add_topic.insert('1.0', "Topic")
+add_topic.pack()
 
 # save button to add new time
 add_time_save = tk.Button(frame, text="Save", command=save_time)
