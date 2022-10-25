@@ -1,3 +1,4 @@
+from cgitb import text
 from html import entities
 from struct import pack
 import tkinter as tk
@@ -23,10 +24,9 @@ pattern = '[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}:[0-9]{2}'
 start_time = datetime.now()
 start_time = start_time.strftime(time_format)
 
-
-
 ############################### Functions ###############################
 
+# check if the datetime format is correct
 def check_datetime_format(datetime_str):
     try:
         datetime.strptime(datetime_str, time_format)
@@ -60,7 +60,6 @@ def track():
     time_stamp = datetime.now()
     time_stamp = time_stamp.strftime(time_format)
 
-
     # check if file exists
     if not exists(filename):
         header = "start,end,duration\n"
@@ -84,6 +83,10 @@ def track():
         # show correct text fild
         forgot_lbl.pack()
         change_start_time.pack()
+
+        # show add topic 
+        topic_label.pack()
+        topic_text.pack()
 
         # show save button
         save_button.pack()
@@ -124,6 +127,10 @@ def track():
         # hide correct button
         forgot_lbl.pack_forget()
         change_start_time.pack_forget()
+
+        # hide add topic 
+        topic_label.pack_forget()
+        topic_text.pack_forget()
 
         # hide save button
         save_button.pack_forget()
@@ -232,6 +239,17 @@ saved_lbl = tk.Label(frame,bg="green", text="Saved!")
 # change the start time
 change_start_time = tk.Text(frame, height=2, width=30)
 change_start_time.insert('0.0', str(start_time))
+
+
+#####################################
+
+# label for the today 
+topic_label = tk.Label(frame, text="What topic do you want to work on today?")
+
+# Text for 
+topic_text = tk.Text(frame, height=5, width=30)
+
+#####################################
 
 # save button
 save_button = tk.Button(frame, text="Save", command=save_correct_start)
