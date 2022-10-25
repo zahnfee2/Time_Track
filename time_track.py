@@ -62,7 +62,7 @@ def track():
 
     # check if file exists
     if not exists(filename):
-        header = "start,end,duration\n"
+        header = "start,end,duration,topic\n"
         save_in_file(header, filename, 'a')
 
     # check if start or end
@@ -77,16 +77,16 @@ def track():
         # change button text
         btn['text'] = 'End'
 
+        # show add topic 
+        topic_label.pack()
+        topic_text.pack()
+
         # unhide label
         lab.pack()
 
         # show correct text fild
         forgot_lbl.pack()
         change_start_time.pack()
-
-        # show add topic 
-        topic_label.pack()
-        topic_text.pack()
 
         # show save button
         save_button.pack()
@@ -112,8 +112,10 @@ def track():
 
         duration = convert_to_datetime(end_time) - convert_to_datetime(start_time)
 
+        topic = topic_text.get(1.0, 'end-1c')
+
         # create line
-        str_data = str(start_time) + "," + str(end_time) + "," + str(duration) + '\n'
+        str_data = str(start_time) + "," + str(end_time) + "," + str(duration) + "," + str(topic) + '\n'
 
         # insert a new line in the file
         save_in_file(str_data, filename, 'a+')
@@ -214,6 +216,11 @@ def print_list(list):
 
 ############################### GUI ###############################
 
+# check if file exists
+if not exists(filename):
+    header = "start,end,duration,topic\n"
+    save_in_file(header, filename, 'a')
+
 # Top level window
 frame = tk.Tk()
 frame.title("Time Track")
@@ -252,7 +259,7 @@ topic_text = tk.Text(frame, height=5, width=30)
 #####################################
 
 # save button
-save_button = tk.Button(frame, text="Save", command=save_correct_start)
+save_button = tk.Button(frame, text="Change start", command=save_correct_start)
 
 # add start time
 add_start_time_lbl = tk.Label(frame, text="Start Time:")
