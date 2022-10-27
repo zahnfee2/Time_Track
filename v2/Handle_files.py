@@ -1,5 +1,5 @@
 from include import csv_path
-import os.path
+from os.path import exists
 import csv
 
 def write_in_file(filename, content, operator):
@@ -14,11 +14,15 @@ def get_content_of_file(filename):
 
 
 def write_in_csv_file(row):
-    f = open(csv_path, 'a')
-    writer = csv.writer(f)
-    if(os.path.isfile(csv_path)):
+
+    if not exists(csv_path):
         first_line = ['start', 'end', 'duration', 'topic']
-        writer.writerow(first_line)
-    writer.writerow(row)
+        with open(csv_path, 'w', encoding='UTF8') as f:
+            writer = csv.writer(f)
+            writer.writerow(first_line)
+
+    with open(csv_path, 'a', encoding='UTF8') as f:
+        writer = csv.writer(f)
+        writer.writerow(row)
 
 
