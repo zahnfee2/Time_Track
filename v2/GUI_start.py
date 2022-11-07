@@ -3,6 +3,7 @@ from Time_track import *
 from datetime import datetime
 from Handle_files import *
 from include import *
+from Function import *
 
 
 class UI_Start():
@@ -51,19 +52,15 @@ class UI_Start():
         end_time_str = self.add_end_time.get(1.0, 'end-1c')
         topic_str = self.add_topic.get(1.0, 'end-1c')
 
-        if self.check_datetime_format(start_time_str) and self.check_datetime_format(end_time_str):
+        if check_datetime_format(start_time_str) and check_datetime_format(end_time_str):
             duration = self.convert_to_datetime(end_time_str) - self.convert_to_datetime(start_time_str)
             row = [start_time_str, end_time_str, str(duration), topic_str]
             write_in_csv_file(row)
-
-
-    def check_datetime_format(self, datetime_str):
-        try:
-            datetime.strptime(datetime_str, time_format)
-            return True
-        except ValueError:
-            return False
-
+            content = get_content_csv_file(csv_path)
+            content = sort_Content(content)
+            write_List_in_csv(csv_path, content)
+            #write_in_file(csv_path, content.dtypes, 'w')
+            print("Time was added and the List is sorted")
 
     def quit(self):
         self.root.destroy()
