@@ -7,13 +7,16 @@ from Function import *
 
 
 class UI_Start():
+   
+
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.title("Time Track")
-        self.root.geometry('300x600')
+        self.root.geometry('300x700')
 
         tkinter.Label(self.root, text="Welcome to daily.").pack(pady=15)
-        tkinter.Button(self.root, text="Track Time", height=1, width=30, command=UI_Track_Time ).pack(pady=4)
+        tkinter.Label(self.root, text="Duration: " + str(get_entire_duration())).pack(pady=15)
+        tkinter.Button(self.root, text="Track Time", height=1, width=30, command=self.start_tracking_time).pack(pady=4)
         tkinter.Button(self.root, text="Show recordet time", height=1, width=30, command=UI_Show_Rec_Time ).pack(pady=4)
 
         tkinter.Label(self.root, text="Add Time").pack(pady=30)
@@ -37,12 +40,21 @@ class UI_Start():
 
         self.save_button_add_time = tkinter.Button(self.root, text="Add New Time", height=1, width=30, command=self.add_new_time ).pack(pady=5)
 
+        self.wrong_format = tkinter.Label(self.root, text="Wrong Timeformat!", bg="red")
+        self.saved_label = tkinter.Label(self.root, text="Time was added!", bg="green")
+
         # Quit Button
         tkinter.Button(self.root, text="Quit", height=1, width=30, command=quit ).pack(pady=4)
 
         self.root.mainloop()
 
-
+    def start_tracking_time(self):
+        if self.wrong_format.winfo_ismapped():
+                self.wrong_format.pack_forget()
+        if self.saved_label.winfo_ismapped():
+            self.saved_label.pack_forget()
+        UI_Track_Time()
+    
     def convert_to_datetime(self, str_datetime):
         return datetime.strptime(str_datetime, time_format)
 
@@ -51,16 +63,27 @@ class UI_Start():
         start_time_str = self.add_start_time.get(1.0, 'end-1c')
         end_time_str = self.add_end_time.get(1.0, 'end-1c')
         topic_str = self.add_topic.get(1.0, 'end-1c')
+        topic_str = delete_new_Line(topic_str)
 
         if check_datetime_format(start_time_str) and check_datetime_format(end_time_str):
+
+            if self.wrong_format.winfo_ismapped():
+                self.wrong_format.pack_forget()
+
             duration = self.convert_to_datetime(end_time_str) - self.convert_to_datetime(start_time_str)
             row = [start_time_str, end_time_str, str(duration), topic_str]
             write_in_csv_file(row)
             content = get_content_csv_file(csv_path)
             content = sort_Content(content)
             write_List_in_csv(csv_path, content)
-            #write_in_file(csv_path, content.dtypes, 'w')
-            print("Time was added and the List is sorted")
+            self.add_topic.delete('1.0', 'end')
+            
+            self.saved_label.pack(pady=5)
+        else: 
+            if self.saved_label.winfo_ismapped():
+                self.saved_label.pack_forget()
+
+            self.wrong_format.pack(pady=15)
 
     def quit(self):
         self.root.destroy()
@@ -144,6 +167,7 @@ class UI_Track_Time():
     def end_tracking(self):
         self.end_time = datetime.now()
         self.topic = self.topic_Text.get(1.0, 'end-1c')
+        self.topic = delete_new_Line(self.topic)
 
         # show start button
         self.start_button.pack(pady=2)
