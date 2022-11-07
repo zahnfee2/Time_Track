@@ -3,15 +3,15 @@ from os.path import exists
 import pandas as pd
 import csv
 
-def write_in_file(filename, content, operator):
-    with open(filename, operator) as f:
-        f.write(content)
+#def write_in_file(filename, content, operator):
+#    with open(filename, operator) as f:
+#        f.write(content)
 
 
-def get_content_of_file(filename):
-    with open(filename, 'w') as f:
-        content = f.read()
-    return content
+#def get_content_of_file(filename):
+#    with open(filename, 'w') as f:
+#        content = f.read()
+#    return content
 
 
 def write_in_csv_file(row):

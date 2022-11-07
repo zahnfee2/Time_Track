@@ -17,7 +17,7 @@ class UI_Start():
         tkinter.Label(self.root, text="Welcome to daily.").pack(pady=15)
         tkinter.Label(self.root, text="Duration: " + str(get_entire_duration())).pack(pady=15)
         tkinter.Button(self.root, text="Track Time", height=1, width=30, command=self.start_tracking_time).pack(pady=4)
-        tkinter.Button(self.root, text="Show recordet time", height=1, width=30, command=UI_Show_Rec_Time ).pack(pady=4)
+        tkinter.Button(self.root, text="Show recordet time", height=1, width=30, command=self.show_rec_time ).pack(pady=4)
 
         tkinter.Label(self.root, text="Add Time").pack(pady=30)
 
@@ -47,6 +47,13 @@ class UI_Start():
         tkinter.Button(self.root, text="Quit", height=1, width=30, command=quit ).pack(pady=4)
 
         self.root.mainloop()
+
+    def show_rec_time(self):
+        if self.wrong_format.winfo_ismapped():
+                self.wrong_format.pack_forget()
+        if self.saved_label.winfo_ismapped():
+            self.saved_label.pack_forget()
+        UI_Show_Rec_Time()
 
     def start_tracking_time(self):
         if self.wrong_format.winfo_ismapped():
@@ -218,7 +225,8 @@ class UI_Show_Rec_Time():
         self.root.geometry('300x400')
 
         tkinter.Label(self.root, text="This is your recordet Time").pack(pady=10)
-
+        content = get_content_csv_file(csv_path)
+        
         self.root.mainloop()
 
     def quit(self):
