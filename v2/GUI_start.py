@@ -222,11 +222,24 @@ class UI_Show_Rec_Time():
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.title("Time Track")
-        self.root.geometry('300x400')
+        self.root.geometry('800x400')
 
         tkinter.Label(self.root, text="This is your recordet Time").pack(pady=10)
         content = get_content_csv_file(csv_path)
-        
+
+        start_list = content.start.tolist()
+        end_list = content.end.tolist()
+        duration_list= content.duration.tolist()
+        topic_list = content.topic.tolist()
+
+        lb = tkinter.Listbox(self.root, width=80, height=30)
+
+        counter = 1
+        for i in range(0, len(start_list)):
+            lb.insert(counter, start_list[i] + "  ##  " + end_list[i] + "  ##  " + duration_list[i] + "  ##  " + topic_list[i])
+            counter = counter + 1
+
+        lb.pack()
         self.root.mainloop()
 
     def quit(self):
