@@ -236,7 +236,7 @@ class UI_Show_Rec_Time():
 
         counter = 1
         for i in range(0, len(start_list)):
-            lb.insert(counter, start_list[i] + "  ##  " + end_list[i] + "  ##  " + duration_list[i] + "  ##  " + topic_list[i])
+            lb.insert(str(counter), str(start_list[i]) + "  ##  " + str(end_list[i]) + "  ##  " + str(duration_list[i]) + "  ##  " + str(topic_list[i]))
             counter = counter + 1
 
         lb.pack()
