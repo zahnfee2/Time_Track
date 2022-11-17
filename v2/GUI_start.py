@@ -44,7 +44,7 @@ class UI_Start():
         self.saved_label = tkinter.Label(self.root, text="Time was added!", bg="green")
 
         # Quit Button
-        tkinter.Button(self.root, text="Quit", height=1, width=30, command=quit ).pack(pady=4)
+        tkinter.Button(self.root, text="Quit", height=1, width=30, command=self.quit ).pack(pady=4)
 
         self.root.mainloop()
 
@@ -105,6 +105,7 @@ class UI_Track_Time():
         ui_track.win_track.title("Time Track")
         ui_track.win_track.geometry('300x350')
 
+
         ui_track.time_is_running_label = tkinter.Label(ui_track.win_track, text="Time is running!", bg="aquamarine")
 
         # End Button
@@ -128,11 +129,12 @@ class UI_Track_Time():
         ui_track.saved_label = tkinter.Label(ui_track.win_track, bg="green", height=1, width=15, text="Saved")
 
         # Quit Button
-        ui_track.quit_button = tkinter.Button(ui_track.win_track, text="Quit", height=1, width=30, command=quit )
+        ui_track.quit_button = tkinter.Button(ui_track.win_track, text="Quit", height=1, width=30, command=ui_track.quit )
         ui_track.quit_button.pack(pady=2)
 
         # Main Loop
         ui_track.win_track.mainloop()
+
     
     def changeStartTime(ui_track):
         ui_track.start_time = datetime.now()
@@ -143,7 +145,11 @@ class UI_Track_Time():
         ui_track.duration = ui_track.end_time - ui_track.start_time
 
 
+    def disable_event(ui_track):
+        pass
+
     def start_tracking(ui_track):
+        ui_track.win_track.protocol("WM_DELETE_WINDOW", ui_track.disable_event)
         ui_track.start_time = datetime.now()
 
         # convert time in a good format to save the data
@@ -214,8 +220,8 @@ class UI_Track_Time():
         write_in_csv_file(row)
         
 
-    def quit(ui_track):
-        ui_track.win_track.destroy()
+    def quit(self):
+        self.win_track.destroy()
 
 
 class UI_Show_Rec_Time():
