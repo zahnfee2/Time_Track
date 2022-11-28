@@ -1,1 +1,3 @@
 __pycache__/
+./src/tracked_time.csv
+./src/__pycache__
