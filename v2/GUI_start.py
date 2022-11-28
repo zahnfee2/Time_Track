@@ -13,6 +13,7 @@ class UI_Start():
         self.root.title("Time Track")
         self.root.geometry('300x700')
 
+
         # Front for heading
         header = font.Font(family='Hevetica', size=30, weight='bold')
 
