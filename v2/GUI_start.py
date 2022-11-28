@@ -15,12 +15,20 @@ class UI_Start():
 
         # Front for heading
         header = font.Font(family='Hevetica', size=30, weight='bold')
+
+        # header
         tkinter.Label(self.root, text="Welcome to daily.", font=header).pack(pady=15)
+
+        # show the entire duration
         tkinter.Label(self.root, text="Duration: " + str(get_entire_duration())).pack(pady=15)
+
+        # Start tracking time
         tkinter.Button(self.root, text="Track Time",height=1, width=30, command=self.start_tracking_time).pack(pady=4)
+
+        # Show the entrys 
         tkinter.Button(self.root, text="Show recordet time", height=1, width=30, command=self.show_rec_time ).pack(pady=4)
 
-        # add line 
+        # Line 
         canvas = Canvas(self.root, width=300, height=60)
         canvas.create_line(0, 30, 300, 30)
         canvas.pack()
@@ -49,6 +57,11 @@ class UI_Start():
 
         self.wrong_format = tkinter.Label(self.root, text="Wrong Timeformat!", bg="red")
         self.saved_label = tkinter.Label(self.root, text="Time was added!", bg="green")
+
+        # add line 
+        canvas = Canvas(self.root, width=300, height=60)
+        canvas.create_line(0, 30, 300, 30)
+        canvas.pack()
 
         # Quit Button
         tkinter.Button(self.root, text="Quit", height=1, width=30, command=self.quit ).pack(pady=4)
