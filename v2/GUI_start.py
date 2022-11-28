@@ -1,25 +1,32 @@
 import tkinter
+import tkinter.font as font
+from tkinter import Canvas
 from Time_track import *
 from datetime import datetime
 from Handle_files import *
 from include import *
 from Function import *
 
-
 class UI_Start():
-   
-
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.title("Time Track")
         self.root.geometry('300x700')
 
-        tkinter.Label(self.root, text="Welcome to daily.").pack(pady=15)
+        # Front for heading
+        header = font.Font(family='Hevetica', size=30, weight='bold')
+        tkinter.Label(self.root, text="Welcome to daily.", font=header).pack(pady=15)
         tkinter.Label(self.root, text="Duration: " + str(get_entire_duration())).pack(pady=15)
-        tkinter.Button(self.root, text="Track Time", height=1, width=30, command=self.start_tracking_time).pack(pady=4)
+        tkinter.Button(self.root, text="Track Time",height=1, width=30, command=self.start_tracking_time).pack(pady=4)
         tkinter.Button(self.root, text="Show recordet time", height=1, width=30, command=self.show_rec_time ).pack(pady=4)
 
-        tkinter.Label(self.root, text="Add Time").pack(pady=30)
+        # add line 
+        canvas = Canvas(self.root, width=300, height=60)
+        canvas.create_line(0, 30, 300, 30)
+        canvas.pack()
+
+        # add new time 
+        tkinter.Label(self.root, text="Add Time").pack()
 
         # add start time
         tkinter.Label(self.root, text="Add Start Time").pack(pady=5)
