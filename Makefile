@@ -1,5 +1,5 @@
 run:
-	python3 Start.py
+	python3 ./src/Start.py
 
 setup:
 	pip3 install -r requirements.txt
