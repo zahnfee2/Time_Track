@@ -7,7 +7,6 @@ from Function import *
 
 
 class UI_Start():
-   
 
     def __init__(self):
         self.root = tkinter.Tk()
@@ -244,6 +243,13 @@ class UI_Show_Rec_Time():
         for i in range(0, len(start_list)):
             lb.insert(str(counter), str(start_list[i]) + "  ##  " + str(end_list[i]) + "  ##  " + str(duration_list[i]) + "  ##  " + str(topic_list[i]))
             counter = counter + 1
+
+        height = 5
+        width = 5
+        for i in range(height):
+            for j in range(width):
+                b = tkinter.Entry(self.root, text="")
+                b.grid(row=i, column=j)
 
         lb.pack()
         self.root.mainloop()
