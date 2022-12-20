@@ -22,4 +22,15 @@ start,end,duration,topic
 2022-11-21 12:15:00,2022/11/21 13:19,1:03:22.768293,Jest Vortrag vervollstaendigen
 2022-11-22 08:27:00,2022/11/22 09:05,0:38:00,Jest Vortrag fertig gestellt
 2022-11-22 09:15:00,2022/11/22 10:13,0:58:00,Daily Scrum & Jest Vortrag gehalten
-2022/11/28 13:22,2022/11/28 14:09,0:46:55.396010,"Letzte Woche nachholen. Herausfinden, wie man test auf den Matrix Server am besten anwendet. "
+2022-11-28 13:22:00,2022/11/28 14:09,0:46:55.396010,"Letzte Woche nachholen. Herausfinden, wie man test auf den Matrix Server am besten anwendet. "
+2022-11-29 08:55:00,2022/11/29 10:05,1:10:00,Scrum Sprint & SSH Verbindung zum Server erstellt
+2022-11-29 14:57:00,2022/11/29 15:19,1:01:30.938415,Zu Backend Gruppe gewechseltv & Verbindung zu MySql erstellt & von Lasse in das Thema eingearbeitet worden.
+2022-12-02 10:37:00,2022/12/02 16:05,5:27:59.867280,"REST Api Script erstellen, REST Api erstellt. Daten können gefetcht werden. Es können aber noch keine Daten in die Datenbank eingeragen werden."
+2022-12-13 09:15:00,2022/12/13 10:12,0:57:00,Daily Scrum
+2022-12-13 15:45:00,2022/12/13 16:15,0:29:47.585864,Admin User create and delete
+2022-12-14 09:52:00,2022/12/14 10:18,0:26:13.105352,GetDiscussionByUser schreiben
+2022-12-16 13:28:00,2022/12/16 14:56,1:27:28.789826,"Delete Workshop, PUT Workshop"
+2022-12-19 09:00:00,2022/12/19 09:26,0:26:00,Trelloboard aktuallisiert & Workshop delete und update & getDiscussionByUser in git gepushed
+2022-12-20 08:14:00,2022/12/20 08:54,0:03:17.346122,Sprintende in anwesenheit mit Koschel. Ich war protokolland
+2022-12-20 09:05:00,2022/12/20 11:25,2:20:00,"Planung Januar mit der grupe, Code kommentiert"
+2022/12/20 11:25,2022/12/20 14:28,3:02:41.757949,Luca bei Docker helfen. Dokumentation Code & Meeting mit Heise
