@@ -292,6 +292,15 @@ class UI_Show_Rec_Time():
         self.scrollbar.config(command=self.multiple_yview) 
 
 
+
+        height = 5
+        width = 5
+        for i in range(height):
+            for j in range(width):
+                b = tkinter.Entry(self.root, text="")
+                b.grid(row=i, column=j)
+
+        lb.pack()
         self.root.mainloop()
 
     # Try to connect all Text with the scrollbar
