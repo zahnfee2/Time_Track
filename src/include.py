@@ -1,2 +1,2 @@
 time_format = '%Y/%m/%d %H:%M'
-csv_path = "./src/tracked_time.csv"
+csv_path = "./time_track_data/tracked_time.csv"

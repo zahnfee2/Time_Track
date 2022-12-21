@@ -106,6 +106,11 @@ class UI_Start():
             content = sort_Content(content)
             write_List_in_csv(csv_path, content)
             self.add_topic.delete('1.0', 'end')
+            """
+            add_git()
+            commit_git()
+            push_git()
+            """
             
             self.saved_label.pack(pady=5)
         else: 
@@ -240,6 +245,11 @@ class UI_Track_Time():
         duration_str = str(self.duration)
         row = [start_time_str, end_tim_str, duration_str, self.topic]
         write_in_csv_file(row)
+        """
+        add_git()
+        commit_git()
+        push_git()
+        """
         
 
     def quit(self):
@@ -253,7 +263,7 @@ class UI_Show_Rec_Time():
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.title("Time Track")
-        self.root.geometry('1000x500')
+        self.root.geometry('1000x700')
 
         self.start_lb = tkinter.Label(self.root, text="This is your recordet Time")
         self.start_lb.grid(row=1, column=2)
@@ -282,6 +292,7 @@ class UI_Show_Rec_Time():
             self.topic_lb.insert(tkinter.END, str(topic_list[i]) + '\n')
             self.counter = self.counter + 1
 
+
         self.counter_lb.grid(row=2, column=1)
         self.start_lb.grid(row=2,column=2)
         self.end_lb.grid(row=2,column=3)
@@ -301,15 +312,27 @@ class UI_Show_Rec_Time():
                 b.grid(row=i, column=j)
 
         """
+        self.quit_button = tkinter.Button(self.root, text="Save", height=1, width=30, command=self.save_time )
+        self.quit_button.grid(row=5, column=5)
         self.root.mainloop()
+    
+    def save_time(self):
+        start = self.start_lb.get(1.0, tkinter.END)
+        end = self.end_lb.get(1.0, tkinter.END)
+        duration = self.duration_lb.get(1.0, tkinter.END)
+        topic = self.topic_lb.get(1.0, tkinter.END)
+        change_end_content(start, end, duration, topic)
+        
+
 
     # Try to connect all Text with the scrollbar
-    def multiple_yview(self): 
-        self.counter_lb.yview()
-        self.start_lb.yview()
-        self.end_lb.yview()
-        self.duration_lb.yview()
-        self.topic_lb.yview()
+    def multiple_yview(self, *args): 
+        self.counter_lb.yview(*args)
+        self.start_lb.yview(*args)
+        self.end_lb.yview(*args)
+        self.duration_lb.yview(*args)
+        self.topic_lb.yview(*args)
+
 
 
 

@@ -1,4 +1,5 @@
 __pycache__/
 src/tracked_time.csv
+src/old_tracked_time.csv
 src/__pycache__
 time_track_data

@@ -32,5 +32,5 @@ def get_content_csv_file(filename):
     return content
 
 def write_List_in_csv(filename, content):
-    print(content)
-    content.to_csv(filename, index=False)
+    print(filename)
+    content.to_csv(filename, index=False, sep=',')
