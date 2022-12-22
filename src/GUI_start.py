@@ -12,7 +12,7 @@ class UI_Start():
 
         self.root = tkinter.Tk()
         self.root.title("Time Track")
-        self.root.geometry('300x700')
+        self.root.geometry('370x790')
 
 
         # Front for heading
@@ -31,27 +31,28 @@ class UI_Start():
         tkinter.Button(self.root, text="Show recordet time", height=1, width=30, command=self.show_rec_time ).pack(pady=4)
 
         # Line 
-        canvas = Canvas(self.root, width=300, height=60)
-        canvas.create_line(0, 30, 300, 30)
+        canvas = Canvas(self.root, width=350, height=60)
+        canvas.create_line(0, 30, 350, 30)
         canvas.pack()
 
         # add new time 
-        tkinter.Label(self.root, text="Add Time").pack()
+        add_time_font = font.Font(family='Hevetica', size=20)
+        tkinter.Label(self.root, text="Add Time", font=add_time_font).pack()
 
         # add start time
-        tkinter.Label(self.root, text="Add Start Time").pack(pady=5)
+        tkinter.Label(self.root, text="Start Time").pack(pady=5)
         self.add_start_time = tkinter.Text(self.root, height=1, width=17)
         self.add_start_time.insert('1.0', datetime.now().strftime(time_format))
         self.add_start_time.pack(pady=5)
     
         # add end time 
-        tkinter.Label(self.root, text="Add End Time").pack(pady=5)
+        tkinter.Label(self.root, text="End Time").pack(pady=5)
         self.add_end_time = tkinter.Text(self.root, height=1, width=17)
         self.add_end_time.insert('1.0', datetime.now().strftime(time_format))
         self.add_end_time.pack(pady=5)
 
         # add topic
-        tkinter.Label(self.root, text="Add Topic").pack(pady=5)
+        tkinter.Label(self.root, text="Topic").pack(pady=5)
         self.add_topic = tkinter.Text(self.root, height=3, width=33)
         self.add_topic.pack(pady=5)
 
@@ -61,8 +62,8 @@ class UI_Start():
         self.saved_label = tkinter.Label(self.root, text="Time was added!", bg="green")
 
         # add line 
-        canvas = Canvas(self.root, width=300, height=60)
-        canvas.create_line(0, 30, 300, 30)
+        canvas = Canvas(self.root, width=350, height=60)
+        canvas.create_line(0, 30, 350, 30)
         canvas.pack()
 
         # Quit Button
@@ -99,17 +100,23 @@ class UI_Start():
             if self.wrong_format.winfo_ismapped():
                 self.wrong_format.pack_forget()
 
-            duration = self.convert_to_datetime(end_time_str) - self.convert_to_datetime(start_time_str)
+            # compute new duration
+            end_time_mil = self.convert_to_datetime(end_time_str)
+            start_time_mil = self.convert_to_datetime(start_time_str)
+            duration = end_time_mil.replace(microsecond=0) - start_time_mil.replace(microsecond=0)
+
+            # build the new line
             row = [start_time_str, end_time_str, str(duration), topic_str]
+
+            # write data in file
             write_in_csv_file(row)
+
+            # sort content of file
             content = get_content_csv_file(csv_path)
             content = sort_Content(content)
             write_List_in_csv(csv_path, content)
             self.add_topic.delete('1.0', 'end')
 
-            # push data to github
-            push_tracked_time()
-            
             self.saved_label.pack(pady=5)
         else: 
             if self.saved_label.winfo_ismapped():
@@ -167,7 +174,7 @@ class UI_Track_Time():
 
 
     def compute_duration(ui_track):
-        ui_track.duration = ui_track.end_time - ui_track.start_time
+        ui_track.duration = ui_track.end_time.replace(microsecond=0) - ui_track.start_time.replace(microsecond=0)
 
 
     def disable_event(ui_track):
@@ -244,9 +251,6 @@ class UI_Track_Time():
         row = [start_time_str, end_tim_str, duration_str, self.topic]
         write_in_csv_file(row)
 
-        # push data to githbub
-        push_tracked_time()
-        
 
     def quit(self):
         self.win_track.destroy()
@@ -259,11 +263,14 @@ class UI_Show_Rec_Time():
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.title("Time Track")
-        self.root.geometry('1000x700')
+        self.root.geometry('1300x700')
 
-        self.start_lb = tkinter.Label(self.root, text="This is your recordet Time")
-        self.start_lb.grid(row=1, column=2)
+        rec_font = font.Font(family='Hevetica', size=20, weight='bold')
+
+        self.start_lb = tkinter.Label(self.root, text="This is your recordet Time", font=rec_font)
+        self.start_lb.grid(row=1, column=1)
         content = get_content_csv_file(csv_path)
+
 
         start_list = content.start.tolist()
         end_list = content.end.tolist()
@@ -271,67 +278,39 @@ class UI_Show_Rec_Time():
         topic_list = content.topic.tolist()
 
         self.scrollbar = tkinter.Scrollbar(self.root)
-        self.scrollbar.grid(row=2,column=6, sticky='ns')
+        self.scrollbar.grid(row=2, column=2, sticky='ns')
 
-        self.counter_lb = tkinter.Text(self.root, width=5, height=30, yscrollcommand=self.scrollbar.set, wrap=tkinter.NONE)
-        self.start_lb = tkinter.Text(self.root, width=20, height=30, yscrollcommand=self.scrollbar.set, wrap=tkinter.NONE)
-        self.end_lb = tkinter.Text(self.root, width=18, height=30, yscrollcommand=self.scrollbar.set,wrap=tkinter.NONE)
-        self.duration_lb = tkinter.Text(self.root, width=18, height=30, yscrollcommand=self.scrollbar.set, wrap=tkinter.NONE)
-        self.topic_lb = tkinter.Text(self.root, width=40, height=30, yscrollcommand=self.scrollbar.set, wrap=tkinter.NONE)
+        self.text_fild = tkinter.Text(self.root, width = 150, height=30, yscrollcommand=self.scrollbar.set, wrap=tkinter.NONE)
 
+        # counter
         self.counter = 1
+
+        # add content to columns
         for i in range(0, len(start_list)):
-            self.counter_lb.insert(tkinter.END, str(self.counter) + '\n')
-            self.start_lb.insert(tkinter.END, str(start_list[i]) + '\n')
-            self.end_lb.insert(tkinter.END, str(end_list[i]) + '\n')
-            self.duration_lb.insert(tkinter.END, str(duration_list[i]) + '\n')
-            self.topic_lb.insert(tkinter.END, str(topic_list[i]) + '\n')
+
+            self.text_fild.insert(tkinter.END, str(self.counter) + '\t' + '|' + '\t'
+                + str(start_list[i]) + '\t' + '|' + '\t' 
+                + str(end_list[i]) + '\t' + '|'+ '\t' 
+                + str(duration_list[i]) + '\t' + '|'+ '\t'
+                + str(topic_list[i]) + '\n'
+            )
             self.counter = self.counter + 1
 
+        self.text_fild.grid(row=2, column=1)
 
-        self.counter_lb.grid(row=2, column=1)
-        self.start_lb.grid(row=2,column=2)
-        self.end_lb.grid(row=2,column=3)
-        self.duration_lb.grid(row=2,column=4)
-        self.topic_lb.grid(row=2,column=5)
+        # configure scrollbar
+        self.scrollbar.config(command=self.text_fild.yview)
 
-        # Hier weiter machen
-        self.scrollbar.config(command=self.multiple_yview) 
-
-
-        """
-        height = 5
-        width = 5
-        for i in range(height):
-            for j in range(width):
-                b = tkinter.Entry(self.root, text="")
-                b.grid(row=i, column=j)
-
-        """
-        self.quit_button = tkinter.Button(self.root, text="Save", height=1, width=30, command=self.save_time )
-        self.quit_button.grid(row=5, column=5)
+        self.save_button = tkinter.Button(self.root, text="Save", height=1, width=30, command=self.save_time )
+        self.save_button.grid(row=3, column=1)
         self.root.mainloop()
     
     def save_time(self):
-        start = self.start_lb.get(1.0, tkinter.END)
-        end = self.end_lb.get(1.0, tkinter.END)
-        duration = self.duration_lb.get(1.0, tkinter.END)
-        topic = self.topic_lb.get(1.0, tkinter.END)
-        change_end_content(start, end, duration, topic)
-        
-
-
-    # Try to connect all Text with the scrollbar
-    def multiple_yview(self, *args): 
-        self.counter_lb.yview(*args)
-        self.start_lb.yview(*args)
-        self.end_lb.yview(*args)
-        self.duration_lb.yview(*args)
-        self.topic_lb.yview(*args)
-
-
+        content = self.text_fild.get(1.0, tkinter.END)
+        save_changed_content(content)
 
 
     def quit(self):
         self.root.destroy()
 
+            

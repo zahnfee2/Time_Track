@@ -2,8 +2,6 @@ from datetime import datetime
 from include import *
 import pandas as pd
 from os.path import exists
-#from git import Repo
-import git
 import os
 from Handle_files import write_List_in_csv
 
@@ -41,53 +39,36 @@ def delete_new_Line(string):
     string = string.replace('\n',' ')
     return string
 
-
-
-
-def change_end_content(start_str, end_str, duration_str, topic_str):
+def save_changed_content(content):
     start = []
     end = []
     duration = []
     topic = []
+    content = list(content.split('\n'))
+    for line in content:
+        if not line:
+            break
+        line_list = list(line.split('\t' + '|' + '\t'))
+        #print(line_list)
+        if len(line_list) == 5:
 
-    start = create_list(start_str)
-    end = create_list(end_str)
-    duration = create_list(duration_str)
-    topic = create_list(topic_str)
+            for i in range(0,len(line_list)):
 
-    content = {'start': start, 'end': end, 'duration': duration, 'topic': topic}
-    content = pd.DataFrame(content)
-
-    content = delete_last_entry_of_df_if_empty(content)
-
-    print(content.tail(1))
-    write_List_in_csv(csv_path, content)
-
-def delete_last_entry_of_df_if_empty(content):
-    if(not content.start[len(content)-1]):
-        print('delete last entry')
-        content.drop(index=content.index[-1],axis=0,inplace=True)
-    return content
-
-
-def create_list(stri):
-    out = []
-    buff = []
-    for line in stri:
-        if line == '\n':
-            out.append(''.join(buff))
-            buff = []
+                if i == 1:
+                    start.append(line_list[i])
+                elif i == 2:
+                    end.append(line_list[i])
+                elif i == 3:
+                    duration.append(line_list[i])
+                elif i == 4:
+                    topic.append(line_list[i])
+    
         else:
-            buff.append(line)
+            print("To much entrys in Line ## line: " + str(len(line)))
 
-    return out
+    result = {'start': start, 'end': end, 'duration': duration, 'topic': topic}
+    result = pd.DataFrame(result)
+    print(result)
+    write_List_in_csv(csv_path , result)
+    
 
-
-def push_tracked_time():
-    path = os.getcwd() + "/time_track_data"
-    repo = git.Repo(path)
-    repo.git.pull()
-    repo.git.add("tracked_time.csv")
-    repo.git.commit(m = "add new line tracked_time.csv")
-    repo.git.push()
-    print("Pushed to Github done.")
