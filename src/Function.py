@@ -28,7 +28,7 @@ def append_Line(content, line):
 
 def get_entire_duration():
     if(exists(csv_path)):
-        content = pd.read_csv(csv_path)
+        content = pd.read_csv(csv_path, sep=";")
         content = pd.DataFrame(content)
         content['duration'] = pd.to_timedelta(content.duration)
         return content.duration.sum()

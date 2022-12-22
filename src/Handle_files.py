@@ -20,11 +20,11 @@ def write_in_csv_file(row):
     if not exists(csv_path):
         first_line = ['start', 'end', 'duration', 'topic']
         with open(csv_path, 'w', encoding='UTF8') as f:
-            writer = csv.writer(f)
+            writer = csv.writer(f, delimiter=';')
             writer.writerow(first_line)
 
     with open(csv_path, 'a', encoding='UTF8') as f:
-        writer = csv.writer(f)
+        writer = csv.writer(f, delimiter=';')
         writer.writerow(row)
 
     push_tracked_time()
@@ -32,13 +32,13 @@ def write_in_csv_file(row):
 
 def get_content_csv_file(filename):
     pull_tracked_time()
-    content = pd.read_csv(filename)
+    content = pd.read_csv(filename, sep=';')
     content = pd.DataFrame(content)
     return content
 
 
 def write_List_in_csv(filename, content):
-    content.to_csv(filename, index=False, sep=',')
+    content.to_csv(filename, index=False, sep=';')
     push_tracked_time()
 
 
@@ -54,9 +54,8 @@ def push_tracked_time():
         path = os.getcwd() + "/time_track_data"
         repo = git.Repo(path)
         count_modified_files = len(repo.index.diff(None))
-        if count_modified_files < 0:
+        if count_modified_files > 0:
             pull_tracked_time()
-            print(count_modified_files)
             repo.git.add("tracked_time.csv")
             repo.git.commit(m = "add new line tracked_time.csv")
             repo.git.push()
