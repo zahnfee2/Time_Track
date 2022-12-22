@@ -106,11 +106,9 @@ class UI_Start():
             content = sort_Content(content)
             write_List_in_csv(csv_path, content)
             self.add_topic.delete('1.0', 'end')
-            """
-            add_git()
-            commit_git()
-            push_git()
-            """
+
+            # push data to github
+            push_tracked_time()
             
             self.saved_label.pack(pady=5)
         else: 
@@ -245,11 +243,9 @@ class UI_Track_Time():
         duration_str = str(self.duration)
         row = [start_time_str, end_tim_str, duration_str, self.topic]
         write_in_csv_file(row)
-        """
-        add_git()
-        commit_git()
-        push_git()
-        """
+
+        # push data to githbub
+        push_tracked_time()
         
 
     def quit(self):
