@@ -1,8 +1,9 @@
 from datetime import datetime
 from include import *
 import pandas as pd
-import subprocess
 from os.path import exists
+#from git import Repo
+import git
 import os
 from Handle_files import write_List_in_csv
 
@@ -40,25 +41,7 @@ def delete_new_Line(string):
     string = string.replace('\n',' ')
     return string
 
-def add_git():
-    path = os.getcwd()
-    os.chdir('./time_track_data/')
-    print("Git add: ", str(os.getcwd()))
-    #subprocess.run('git add tracked_time.csv' )
 
-
-def commit_git():
-    print('git commit -m "add new line to time_track.csv"')
-    #subprocess.run('git commit -m "add new line to time_track.csv"')
-
-
-def push_git():
-    #subprocess.run('git push')
-    print("Push before: ", str(os.getcwd()))
-    if(os.getcwd() != path):
-        os.chdir(path)
-
-    print("Push after: ", str(os.getcwd()))
 
 
 def change_end_content(start_str, end_str, duration_str, topic_str):
@@ -98,3 +81,13 @@ def create_list(stri):
             buff.append(line)
 
     return out
+
+
+def push_tracked_time():
+    path = os.getcwd() + "/time_track_data"
+    repo = git.Repo(path)
+    repo.git.pull()
+    repo.git.add("tracked_time.csv")
+    repo.git.commit(m = "add new line tracked_time.csv")
+    repo.git.push()
+    print("Pushed to Github done.")
