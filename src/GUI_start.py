@@ -302,7 +302,7 @@ class UI_Show_Rec_Time():
         self.save_button.pack()
 
         self.quit_button = tkinter.Button(self.root, text="Quit", height=1, width=30 ,command=self.quit)
-        self.quit_button.pack()
+        self.quit_button.pack(pady=20)
         self.root.mainloop()
     
     def save_time(self):

@@ -1,4 +1,4 @@
-from include import csv_path
+from include import csv_path, connect_csv_with_git
 from os.path import exists
 import os
 import git
@@ -44,15 +44,20 @@ def write_List_in_csv(filename, content):
 
 
 def pull_tracked_time():
-    path = os.getcwd() + "/time_track_data"
-    repo = git.Repo(path)
-    repo.git.pull()
+    if connect_csv_with_git:
+        path = os.getcwd() + "/time_track_data"
+        repo = git.Repo(path)
+        repo.git.pull()
+        print("Pull from git.")
 
 def push_tracked_time():
-    path = os.getcwd() + "/time_track_data"
-    repo = git.Repo(path)
-    pull_tracked_time()
-    repo.git.add("tracked_time.csv")
-    repo.git.commit(m = "add new line tracked_time.csv")
-    repo.git.push()
-    print("Pushed to Github done.")
+    if connect_csv_with_git:
+        path = os.getcwd() + "/time_track_data"
+        repo = git.Repo(path)
+        pull_tracked_time()
+        count_modified_files = len(repo.index.diff(None))
+        print(count_modified_files)
+        repo.git.add("tracked_time.csv")
+        repo.git.commit(m = "add new line tracked_time.csv")
+        repo.git.push()
+        print("Pushed to Github done.")

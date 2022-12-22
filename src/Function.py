@@ -68,7 +68,6 @@ def save_changed_content(content):
 
     result = {'start': start, 'end': end, 'duration': duration, 'topic': topic}
     result = pd.DataFrame(result)
-    print(result)
     write_List_in_csv(csv_path , result)
     
 
