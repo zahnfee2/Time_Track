@@ -38,7 +38,6 @@ def get_content_csv_file(filename):
 
 
 def write_List_in_csv(filename, content):
-    print(filename)
     content.to_csv(filename, index=False, sep=',')
     push_tracked_time()
 
@@ -48,16 +47,17 @@ def pull_tracked_time():
         path = os.getcwd() + "/time_track_data"
         repo = git.Repo(path)
         repo.git.pull()
-        print("Pull from git.")
+        print("Get data from git.")
 
 def push_tracked_time():
     if connect_csv_with_git:
         path = os.getcwd() + "/time_track_data"
         repo = git.Repo(path)
-        pull_tracked_time()
         count_modified_files = len(repo.index.diff(None))
-        print(count_modified_files)
-        repo.git.add("tracked_time.csv")
-        repo.git.commit(m = "add new line tracked_time.csv")
-        repo.git.push()
-        print("Pushed to Github done.")
+        if count_modified_files < 0:
+            pull_tracked_time()
+            print(count_modified_files)
+            repo.git.add("tracked_time.csv")
+            repo.git.commit(m = "add new line tracked_time.csv")
+            repo.git.push()
+            print("Pushed data to git.")

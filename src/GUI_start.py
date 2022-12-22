@@ -256,14 +256,13 @@ class UI_Track_Time():
         self.win_track.destroy()
 
 
-class UI_Show_Rec_Time():
 
-    
+class UI_Show_Rec_Time():
 
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.title("Time Track")
-        self.root.geometry('1300x700')
+        self.root.geometry('1300x780')
 
         rec_font = font.Font(family='Hevetica', size=20, weight='bold')
 
@@ -293,14 +292,17 @@ class UI_Show_Rec_Time():
             )
             self.counter = self.counter + 1
 
+        # show data 
         self.text_fild.pack()
+
+        # Save Button
+        self.save_button = tkinter.Button(self.root, text="Save", height=1, width=30, command=self.save_time )
+        self.save_button.pack()
 
         # Saved Label 
         self.saved_label = tkinter.Label(self.root, bg="green", height=1, width=15, text="Saved")
 
-        self.save_button = tkinter.Button(self.root, text="Save", height=1, width=30, command=self.save_time )
-        self.save_button.pack()
-
+        # quit Button
         self.quit_button = tkinter.Button(self.root, text="Quit", height=1, width=30 ,command=self.quit)
         self.quit_button.pack(pady=20)
         self.root.mainloop()
