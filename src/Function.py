@@ -77,12 +77,10 @@ def change_end_content(start_str, end_str, duration_str, topic_str):
 
     content = delete_last_entry_of_df_if_empty(content)
 
-    print(content.tail(1))
     write_List_in_csv(csv_path, content)
 
 def delete_last_entry_of_df_if_empty(content):
     if(not content.start[len(content)-1]):
-        print('delete last entry')
         content.drop(index=content.index[-1],axis=0,inplace=True)
     return content
 
