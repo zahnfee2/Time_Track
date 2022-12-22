@@ -57,6 +57,6 @@ def push_tracked_time():
         if count_modified_files > 0:
             pull_tracked_time()
             repo.git.add("tracked_time.csv")
-            repo.git.commit(m = "add new line tracked_time.csv")
+            repo.git.commit(m = "change tracked_time.csv")
             repo.git.push()
             print("Pushed data to git.")
