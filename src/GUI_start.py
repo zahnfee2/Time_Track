@@ -268,7 +268,7 @@ class UI_Show_Rec_Time():
         rec_font = font.Font(family='Hevetica', size=20, weight='bold')
 
         self.start_lb = tkinter.Label(self.root, text="This is your recordet Time", font=rec_font)
-        self.start_lb.grid(row=1, column=1)
+        self.start_lb.pack()
         content = get_content_csv_file(csv_path)
 
 
@@ -277,10 +277,7 @@ class UI_Show_Rec_Time():
         duration_list= content.duration.tolist()
         topic_list = content.topic.tolist()
 
-        self.scrollbar = tkinter.Scrollbar(self.root)
-        self.scrollbar.grid(row=2, column=2, sticky='ns')
-
-        self.text_fild = tkinter.Text(self.root, width = 150, height=30, yscrollcommand=self.scrollbar.set, wrap=tkinter.NONE)
+        self.text_fild = tkinter.Text(self.root, width = 150, height=30, wrap=tkinter.NONE)
 
         # counter
         self.counter = 1
@@ -296,21 +293,22 @@ class UI_Show_Rec_Time():
             )
             self.counter = self.counter + 1
 
-        self.text_fild.grid(row=2, column=1)
+        self.text_fild.pack()
 
-        # configure scrollbar
-        self.scrollbar.config(command=self.text_fild.yview)
+        # Saved Label 
+        self.saved_label = tkinter.Label(self.root, bg="green", height=1, width=15, text="Saved")
 
         self.save_button = tkinter.Button(self.root, text="Save", height=1, width=30, command=self.save_time )
-        self.save_button.grid(row=3, column=1)
+        self.save_button.pack()
 
         self.quit_button = tkinter.Button(self.root, text="Quit", height=1, width=30 ,command=self.quit)
-        self.quit_button.grid(row=5, column=1, pady=20)
+        self.quit_button.pack()
         self.root.mainloop()
     
     def save_time(self):
         content = self.text_fild.get(1.0, tkinter.END)
         save_changed_content(content)
+        self.saved_label.pack()
 
 
     def quit(self):
