@@ -4,12 +4,12 @@ from tkinter import Canvas
 from Time_track import *
 from datetime import datetime
 from Handle_files import *
-from include import *
+#from include import *
+import include
 from Function import *
 
 class UI_Start():
     def __init__(self):
-
         self.root = tkinter.Tk()
         self.root.title("Time Track")
         self.root.geometry('370x790')
@@ -29,6 +29,11 @@ class UI_Start():
 
         # Show the entrys 
         tkinter.Button(self.root, text="Show recordet time", height=1, width=30, command=self.show_rec_time ).pack(pady=4)
+
+        # Git switch Button
+        tkinter.Label(self.root, text="Syncrone Track Data with Git").pack()
+        self.git_switch_button = tkinter.Button(self.root, text="OFF", height=1, width=15, command=self.change_git_switch )
+        self.git_switch_button.pack()
 
         # Line 
         canvas = Canvas(self.root, width=350, height=60)
@@ -70,6 +75,15 @@ class UI_Start():
         tkinter.Button(self.root, text="Quit", height=1, width=30, command=self.quit ).pack(pady=4)
 
         self.root.mainloop()
+
+    def change_git_switch(self):
+        print("Connect Var: ", include.connect_csv_with_git)
+        if include.connect_csv_with_git:
+            include.setConnect_csv_with_git(False)
+            self.git_switch_button['text'] = "OFF"
+        else:
+            include.setConnect_csv_with_git(True)
+            self.git_switch_button['text'] = "ON"
 
     def show_rec_time(self):
         if self.wrong_format.winfo_ismapped():
