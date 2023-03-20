@@ -12,7 +12,7 @@ make setup
 make
 ```
 
-## Tour
-<img width="200" alt="image" src="https://user-images.githubusercontent.com/45463442/209311148-4549e8a7-664a-4193-ab0d-cb9f2fd74a62.png">
-
-<img width="200" alt="image" src="https://user-images.githubusercontent.com/45463442/209311601-61f54d06-6121-479e-abad-9de9a5f2be4c.png">
+## Pictures 
+<img width="333" alt="Bildschirm­foto 2023-03-20 um 17 46 07" src="https://user-images.githubusercontent.com/45463442/226410637-8af8d1f9-9d08-4c2e-8d44-28e5e8f7927e.png">
+<img width="302" alt="Bildschirm­foto 2023-03-20 um 17 46 23" src="https://user-images.githubusercontent.com/45463442/226410661-8d3efb3e-8ba0-4a8c-920c-def4fe05d843.png">
+<img width="383" alt="Bildschirm­foto 2023-03-20 um 17 46 46" src="https://user-images.githubusercontent.com/45463442/226410670-aaf01971-b53b-4a3e-a44b-f6a4fff8c0bb.png">
