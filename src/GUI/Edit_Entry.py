@@ -18,7 +18,7 @@ class Edit_Entry():
         self.counter = i
         self.root = tkinter.Tk()
         self.root.title("Counter: " + str(i))
-        self.root.geometry('380x980')
+        self.root.geometry('380x880')
 
         # Create A Main Frame
         main_frame = tkinter.Frame(self.root)
@@ -98,6 +98,7 @@ class Edit_Entry():
         # Delete Button 
         tkinter.Button(self.second_frame, text="Delete Entry", height=1, width=10 ,fg='red', command=self.delete_entry).pack(pady=15)
 
+        self.root.geometry('380x980')
         self.root.mainloop()
 
     def delete_entry(self):
@@ -145,6 +146,7 @@ class Edit_Entry():
 
             self.content = sort_Content(self.content)
             write_List_in_csv(csv_path, self.content)
+            push_tracked_time()
             self.quit()
             GUI.Show_Rec.UI_Show_Rec_Time()
 

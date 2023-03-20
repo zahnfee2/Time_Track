@@ -22,7 +22,7 @@ class UI_Start():
 
         self.root = tkinter.Tk()
         self.root.title("Time Track")
-        self.root.geometry('370x820')
+        self.root.geometry('330x500')
 
         # Front for heading
         header = font.Font(family='Hevetica', size=30, weight='bold')

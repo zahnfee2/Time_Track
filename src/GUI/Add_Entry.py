@@ -83,6 +83,7 @@ class Add_Entry():
         # quit Button
         self.quit_button = tkinter.Button(self.second_frame, text="Quit", height=1, width=30 ,command=self.quit)
         self.quit_button.pack(pady=3)
+        self.root.geometry('380x900')
         self.root.mainloop()
 
     def convert_time(self, time):
