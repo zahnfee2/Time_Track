@@ -41,7 +41,7 @@ def get_entire_duration():
         total_seconds = td.total_seconds()                # Convert timedelta into seconds
         seconds_in_hour = 60 * 60                         # Set the number of seconds in an hour
         td_in_hours = total_seconds / seconds_in_hour     # Convert timedelta into hours
-        return td_in_hours
+        return round(td_in_hours, 2)
     else: 
         return 0
 

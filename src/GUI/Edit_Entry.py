@@ -1,7 +1,4 @@
-import tkinter
-import tkinter.font as font
-from tkinter import ttk
-from tkinter import Canvas
+import customtkinter
 from Handle_files import *
 from include import *
 from Function import *
@@ -11,44 +8,30 @@ from tkcalendar import Calendar, DateEntry
 from tktimepicker import AnalogPicker, constants
 from datetime import datetime, date
 
+customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
+customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 
 class Edit_Entry():
 
     def __init__(self, i):
         self.counter = i
-        self.root = tkinter.Tk()
+
+        self.root = customtkinter.CTk()
         self.root.title("Counter: " + str(i))
         self.root.geometry('380x880')
 
-        # Create A Main Frame
-        main_frame = tkinter.Frame(self.root)
-        main_frame.pack(fill=tkinter.BOTH, expand=1)
+        self.frame = customtkinter.CTkScrollableFrame(self.root, width=200, height=200)
+        self.frame.pack(pady=0, padx=0, fill="both", expand=True)
 
-        # Create A Canvas 
-        my_canvas = Canvas(main_frame)
-        my_canvas.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
-
-        # Add A Scrollbar To The Canvas 
-        my_scrollbar = tkinter.Scrollbar(main_frame, orient=tkinter.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
-
-        # Configure The Canvas 
-        my_canvas.configure(yscrollcommand=my_scrollbar.set)
-        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
-
-        # Create ANOTHER Frame INSIDE The Canvas 
-        self.second_frame = tkinter.Frame(my_canvas)
-
-        # Add That New Frame To A Window In the Canvas
-        my_canvas.create_window((0,0), window=self.second_frame, anchor="nw")
+        self.abort_frame = customtkinter.CTkFrame(self.root)
+        self.abort_frame.pack(pady=0, padx=0, fill=None, expand=False)
 
         self.content = get_content_csv_file(csv_path)
         self.chosen_row = self.content.iloc[i]
 
-
         # Start Time 
-        tkinter.Label(self.second_frame, text="Start Time: ").pack(pady=15)
-        self.picker_start = AnalogPicker(self.second_frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
+        customtkinter.CTkLabel(self.frame, text="Start Time: ").pack(pady=15)
+        self.picker_start = AnalogPicker(self.frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
         start_time_hour = datetime.strptime(self.chosen_row['start'], time_format).hour
         start_time_min = datetime.strptime(self.chosen_row['start'], time_format).minute
         self.picker_start.setHours(start_time_hour) 
@@ -56,8 +39,8 @@ class Edit_Entry():
         self.picker_start.pack(fill="both")
 
         # End Time 
-        tkinter.Label(self.second_frame, text="End Time: ").pack(pady=15)
-        self.picker_end = AnalogPicker(self.second_frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
+        customtkinter.CTkLabel(self.frame, text="End Time: ").pack(pady=15)
+        self.picker_end = AnalogPicker(self.frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
         end_time_hour = datetime.strptime(self.chosen_row['end'], time_format).hour
         end_time_min = datetime.strptime(self.chosen_row['end'], time_format).minute
         self.picker_end.setHours(end_time_hour)
@@ -65,9 +48,9 @@ class Edit_Entry():
         self.picker_end.pack(fill="both")
 
         # date picker
-        tkinter.Label(self.second_frame, text="Duration: ").pack(pady=15)
-        tkinter.Label(self.second_frame, text='Choose date').pack(padx=10, pady=5)
-        self.start_cal = DateEntry(self.second_frame
+        customtkinter.CTkLabel(self.frame, text="Duration: ").pack(pady=15)
+        customtkinter.CTkLabel(self.frame, text='Choose date').pack(padx=10, pady=5)
+        self.start_cal = DateEntry(self.frame
                                    , width=12
                                    , background='darkblue'
                                    ,foreground='white'
@@ -79,34 +62,33 @@ class Edit_Entry():
         self.start_cal.pack(padx=10, pady=5)
 
         # add topic
-        tkinter.Label(self.second_frame, text="Topic").pack(pady=5)
-        self.add_topic = tkinter.Text(self.second_frame, height=4, width=50)
-        self.add_topic.insert(tkinter.INSERT, str(self.chosen_row['topic']))
+        customtkinter.CTkLabel(self.frame, text="Topic").pack(pady=5)
+        self.add_topic = customtkinter.CTkTextbox(self.frame)
+        self.add_topic.insert("0.0", str(self.chosen_row['topic']))
         self.add_topic.pack(pady=5)
 
         # add save buton 
-        tkinter.Button(self.second_frame, text="Save", height=2, width=30, fg='green', command=self.save_entry ).pack(pady=5)
-
+        customtkinter.CTkButton(self.frame, text="Save", command=self.save_entry ).pack(pady=5)
 
         # Error Label 
-        self.start_bigger_end = tkinter.Label(self.second_frame, text="Start muss kleiner sein als Ende.", bg='red')
+        self.start_bigger_end = customtkinter.CTkLabel(self.frame, text="Start muss kleiner sein als Ende.")
 
         # quit Button
-        self.quit_button = tkinter.Button(self.second_frame, text="Quit", height=1, width=30 ,command=self.quit)
+        self.quit_button = customtkinter.CTkButton(self.abort_frame, text="Quit", command=self.quit)
         self.quit_button.pack(pady=3)
 
         # Delete Button 
-        tkinter.Button(self.second_frame, text="Delete Entry", height=1, width=10 ,fg='red', command=self.delete_entry).pack(pady=15)
+        customtkinter.CTkButton(self.frame, text="Delete Entry", command=self.delete_entry).pack(pady=15)
 
-        self.root.geometry('380x980')
         self.root.mainloop()
 
     def delete_entry(self):
-        self.delet_root = tkinter.Tk()
+        self.delet_root = customtkinter.CTk()
         self.delet_root.geometry("100x100")
-        tkinter.Label(self.delet_root, text="Are you sure?").pack()
-        tkinter.Button(self.delet_root, text="DELETE", command=self.delete, fg='red').pack()
-        tkinter.Button(self.delet_root, text="Cancel", command=self.quit_delete_window).pack()
+        customtkinter.CTkLabel(self.delet_root, text="Are you sure?").pack(pady=3, padx=3)
+        customtkinter.CTkButton(self.delet_root, text="DELETE", command=self.delete).pack(pady=3, padx=3)
+        customtkinter.CTkButton(self.delet_root, text="Cancel", command=self.quit_delete_window).pack(pady=3, padx=3)
+        self.delet_root.mainloop()
     
     def quit_delete_window(self):
         self.delet_root.destroy()
@@ -118,8 +100,6 @@ class Edit_Entry():
         self.quit_delete_window()
         self.quit()
         GUI.Show_Rec.UI_Show_Rec_Time()
-
-
 
     def convert_time(self, time):
         numbers = re.findall(r'\b\d+\b', time)
@@ -137,7 +117,7 @@ class Edit_Entry():
         else: 
             self.start_bigger_end.forget()
             duration = end_time - start_time
-            topic = self.add_topic.get(1.0, 'end-1c')
+            topic = self.add_topic.get("0.0", "end")
             self.content.iloc[self.counter]['date'] = date
             self.content.iloc[self.counter]['start'] = start_time
             self.content.iloc[self.counter]['end'] = end_time

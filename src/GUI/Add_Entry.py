@@ -1,3 +1,4 @@
+import customtkinter
 import tkinter
 import tkinter.font as font
 from tkinter import Canvas
@@ -10,55 +11,41 @@ from tktimepicker import AnalogPicker, constants
 from datetime import datetime, date
 
 
+customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
+customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
+
 class Add_Entry():
 
     def __init__(self):
-        self.root = tkinter.Tk()
+        self.root = customtkinter.CTk()
         self.root.title("Add time")
         self.root.geometry('450x900')
 
         # Create A Main Frame
-        main_frame = tkinter.Frame(self.root)
-        main_frame.pack(fill=tkinter.BOTH, expand=1)
+        self.main_frame = customtkinter.CTkScrollableFrame(self.root)
+        self.main_frame.pack(fill="both", expand=True)
 
-        # Create A Canvas 
-        my_canvas = Canvas(main_frame)
-        my_canvas.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
-
-        # Add A Scrollbar To The Canvas 
-        my_scrollbar = tkinter.Scrollbar(main_frame, orient=tkinter.VERTICAL, command=my_canvas.yview)
-        my_scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
-
-        # Configure The Canvas 
-        my_canvas.configure(yscrollcommand=my_scrollbar.set)
-        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
-
-        # Create ANOTHER Frame INSIDE The Canvas 
-        self.second_frame = tkinter.Frame(my_canvas)
-
-        # Add That New Frame To A Window In the Canvas
-        my_canvas.create_window((0,0), window=self.second_frame, anchor="nw")
-
-
-        headers = font.Font(family='Hevetica', size=30, weight='bold')
+        # Abort Frame
+        self.abort_frame = customtkinter.CTkFrame(self.root)
+        self.abort_frame.pack(fill=None, expand=False)
 
         # Start Time 
-        tkinter.Label(self.second_frame, text="Start Time: ", font=headers).pack(pady=15)
-        self.picker_start = AnalogPicker(self.second_frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
+        customtkinter.CTkLabel(self.main_frame, text="Start Time: ").pack(pady=15)
+        self.picker_start = AnalogPicker(self.main_frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
         self.picker_start.setHours(datetime.now().hour)
         self.picker_start.setMinutes(datetime.now().minute) 
         self.picker_start.pack(fill="both")
 
         # End Time 
-        tkinter.Label(self.second_frame, text="End Time: ", font=headers).pack(pady=15)
-        self.picker_end = AnalogPicker(self.second_frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
+        customtkinter.CTkLabel(self.main_frame, text="End Time: ").pack(pady=15)
+        self.picker_end = AnalogPicker(self.main_frame, type=constants.HOURS24) #take out 'period=constants.PM' to change to AM
         self.picker_end.setHours(datetime.now().hour)
         self.picker_end.setMinutes(datetime.now().minute) 
         self.picker_end.pack(fill="both")
 
         # Date picker
-        tkinter.Label(self.second_frame, text='Choose date').pack(padx=10, pady=5)
-        self.start_cal = DateEntry(self.second_frame
+        customtkinter.CTkLabel(self.main_frame, text='Choose date').pack(padx=10, pady=5)
+        self.start_cal = DateEntry(self.main_frame
                                    , width=12
                                    , background='darkblue'
                                    ,foreground='white'
@@ -70,20 +57,19 @@ class Add_Entry():
         self.start_cal.pack(padx=10, pady=5)
 
         # Add topic
-        tkinter.Label(self.second_frame, text="Topic").pack(pady=5)
-        self.add_topic = tkinter.Text(self.second_frame, height=4, width=50)
-        self.add_topic.pack(pady=5)
+        customtkinter.CTkLabel(self.main_frame, text="Topic").pack(pady=5)
+        self.add_topic = customtkinter.CTkTextbox(self.main_frame)
+        self.add_topic.pack(fill="x", expand=True, pady=5, padx=5)
 
         # Add save buton 
-        tkinter.Button(self.second_frame, text="Save", height=1, width=30, command=self.save_entry ).pack(pady=5)
+        customtkinter.CTkButton(self.main_frame, text="Save", command=self.save_entry ).pack(pady=5)
 
         # Error Label 
-        self.start_bigger_end = tkinter.Label(self.second_frame, text="Start muss kleiner sein als Ende.", bg='red')
+        self.start_bigger_end = customtkinter.CTkLabel(self.main_frame, text="Start muss kleiner sein als Ende.")
 
         # quit Button
-        self.quit_button = tkinter.Button(self.second_frame, text="Quit", height=1, width=30 ,command=self.quit)
+        self.quit_button = customtkinter.CTkButton(self.abort_frame, text="Quit", command=self.quit)
         self.quit_button.pack(pady=3)
-        self.root.geometry('380x900')
         self.root.mainloop()
 
     def convert_time(self, time):
@@ -103,12 +89,13 @@ class Add_Entry():
         else: 
             self.start_bigger_end.forget()
             duration = end_time - start_time
-            topic = self.add_topic.get(1.0, 'end-1c')
+            topic = self.add_topic.get("0.0", "end")
             row = [date,start_time.strftime(time_format), end_time.strftime(time_format), duration, topic]
             write_in_csv_file(row)
             content = get_content_csv_file(csv_path)
             content = sort_Content(content)
             write_List_in_csv(csv_path, content)
+            push_tracked_time()
             self.quit()
 
     def quit(self):

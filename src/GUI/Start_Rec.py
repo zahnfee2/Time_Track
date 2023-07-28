@@ -1,6 +1,4 @@
-import tkinter
-import tkinter.font as font
-from tkinter import Canvas
+from turtle import width
 from Time_track import *
 from datetime import datetime, date
 from Handle_files import *
@@ -10,50 +8,51 @@ from Function import *
 from tkcalendar import Calendar, DateEntry
 from tktimepicker import SpinTimePickerModern, AnalogPicker
 from tktimepicker import constants
+import customtkinter
 
+customtkinter.set_appearance_mode("System")  # Modes: system (default), light, dark
+customtkinter.set_default_color_theme("green")  # Themes: blue (default), dark-blue, green
 class UI_Track_Time():
     def __init__(self):
         self.date = date.today()
 
         self.start_time = datetime.now().strftime(time_format)
 
-        # Main Window
-        self.win_track = tkinter.Tk()
-        self.win_track.title("Time Track")
-        self.win_track.geometry('300x600')
+        self.root = customtkinter.CTk()
+        self.root.title("Record Time")
+        self.root.geometry('300x800')
 
-        self.time_is_running_label = tkinter.Label(self.win_track, text="Time is running!", bg="aquamarine")
+        # Main Window
+        self.win_track = customtkinter.CTkFrame(master=self.root)
+        self.win_track.pack(pady=0, padx=0, fill="both", expand=True)
+
+        self.time_is_running_label = customtkinter.CTkLabel(self.win_track, text="Time is running!")
 
         # End Button
-        self.end_button = tkinter.Button(self.win_track, text="End Tracking", height=1, width=30, command=self.end_tracking )
+        self.end_button = customtkinter.CTkButton(self.win_track, text="End Tracking", command=self.end_tracking )
 
         # Topic Text
-        self.topic_label = tkinter.Label(self.win_track, text="Topic:")
-        self.topic_Text = tkinter.Text(self.win_track, height=4, width=40)
+        self.topic_label = customtkinter.CTkLabel(self.win_track, text="Topic:")
+        self.topic_Text = customtkinter.CTkTextbox(self.win_track)
 
         # Change Start Time
-        self.change_start_time_label = tkinter.Label(self.win_track, text="Change Start Time")
-        self.save_button_change_start_time = tkinter.Button(self.win_track, text="Save New Start Time", height=1, width=30, command=self.changeStartTime )
+        self.change_start_time_label = customtkinter.CTkLabel(self.win_track, text="Change Start Time")
+        self.save_button_change_start_time = customtkinter.CTkButton(self.win_track, text="Save New Start Time", command=self.changeStartTime )
 
         # start time picker
-        self.time_lbl_start = tkinter.Label(self.win_track, text="Start-Time: ")
         self.time_picker_start = AnalogPicker(self.win_track, type=constants.HOURS24)
         self.time_picker_start.setHours(datetime.now().hour) 
         self.time_picker_start.setMinutes(datetime.now().minute) 
 
         # Saved Label 
-        self.saved_label = tkinter.Label(self.win_track, bg="green", height=1, width=15, text="Saved")
+        self.saved_label = customtkinter.CTkLabel(self.win_track, text="Saved")
 
         # Quit Button
-        self.quit_button = tkinter.Button(self.win_track, text="Cancel", height=1, width=10, fg="red", command=self.quit )
+        self.quit_button = customtkinter.CTkButton(self.win_track, text="Cancel", command=self.quit )
 
         # overlap 
-        self.overlap = tkinter.Label(self.win_track, text="Time overlaps with on other", bg="red")
-        self.win_track.protocol("WM_DELETE_WINDOW", self.disable_event)
+        self.overlap = customtkinter.CTkLabel(self.win_track, text="Time overlaps with on other")
         self.start_time = datetime.now().strftime(time_format)
-
-        # convert time in a good format to save the data
-        self.time_lbl_start.pack(pady=5)
 
         # show time is running label
         self.time_is_running_label.pack(pady=20)
@@ -63,7 +62,7 @@ class UI_Track_Time():
 
         # show topic Textfild
         self.topic_label.pack()
-        self.topic_Text.pack(pady=2)
+        self.topic_Text.pack(pady=2, padx=2, fill="x", expand=False)
 
         # show area save new start time
         self.change_start_time_label.pack(pady=3)
@@ -108,7 +107,7 @@ class UI_Track_Time():
 
     def end_tracking(self):
         self.end_time = datetime.now().strftime(time_format)
-        self.topic = self.topic_Text.get(1.0, 'end-1c')
+        self.topic = self.topic_Text.get("0.0", "end")
         self.topic = delete_new_Line(self.topic)
         self.duration = self.compute_duration()
         if self.save_time():
@@ -134,4 +133,4 @@ class UI_Track_Time():
 
 
     def quit(self):
-        self.win_track.destroy()
+        self.root.destroy()
